@@ -20,14 +20,20 @@ $(function() {
                       }
       this.url = 'https://api.darksky.net/forecast';
       this.apikey = '82d5924addd70c17e9de4eac071482d6';
-      navigator.geolocation.getCurrentPosition(this.success, this.error, this.options);
-    },
-      success : function(pos) {
-        var crd = pos.coords;
+      $.ajax({
+        url: "http://ipinfo.io/json",
+        jsonp: "callback",
+        dataType: "jsonp", 
+        // Work with the response
+        success: function(data){controller.success( data ) }
+      }); 
+     },
+      success : function(data) {
+        var crd = { 'latitude' :data.loc.split(",")[0], 'longitude' :data.loc.split(",")[1]};
         var baseurl = controller.url;
         var apikey = controller.apikey;
 
-        console.log('Your current position is:');
+        console.log('Your current position is:' + data.city);
         console.log('Latitude : ' + crd.latitude);
         console.log('Longitude: ' + crd.longitude);
         console.log('More or less ' + crd.accuracy + 'meters.');
